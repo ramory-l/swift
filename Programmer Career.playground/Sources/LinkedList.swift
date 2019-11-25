@@ -2,6 +2,7 @@ public struct LinkedList<Value> {
     
     public var head: Node<Value>?
     public var tail: Node<Value>?
+    public var count: Int = 0
     
     public init() {}
     
@@ -15,6 +16,7 @@ public struct LinkedList<Value> {
         if tail == nil {
             tail = head
         }
+        count += 1
     }
     
     public mutating func append(_ value: Value) {
@@ -30,6 +32,7 @@ public struct LinkedList<Value> {
         
         // 3
         tail = tail!.next
+        count += 1
     }
     
     public func node(at index: Int) -> Node<Value>? {
@@ -59,6 +62,7 @@ public struct LinkedList<Value> {
             }
             // 3
             node.next = Node(value: value, next: node.next)
+            count += 1
             return node.next!
     }
     
@@ -71,6 +75,7 @@ public struct LinkedList<Value> {
                 tail = nil
             }
         }
+        count -= 1
         return head?.value
     }
     @discardableResult
@@ -95,6 +100,7 @@ public struct LinkedList<Value> {
         // 4
         prev.next = nil
         tail = prev
+        count -= 1
         return current.value
     }
     @discardableResult
@@ -106,6 +112,7 @@ public struct LinkedList<Value> {
             }
             node.next = node.next?.next
         }
+        count -= 1
         return node.next?.value
     }
     @discardableResult
@@ -124,6 +131,7 @@ public struct LinkedList<Value> {
             }
             previous = previous?.next
         }
+        count -= 1
         return node.value
     }
     private mutating func copyNodes() {
@@ -235,6 +243,7 @@ extension LinkedList where Value: Equatable {
             guard currentNode.value != value else {
                 prev?.next = currentNode.next
                 current = prev?.next
+                count -= 1
                 continue
             }
             prev = current
@@ -252,6 +261,7 @@ extension LinkedList where Value: Equatable {
                 if currentNode?.value == currentValue {
                     beforeCurrent?.next = currentNode?.next
                     currentNode = beforeCurrent?.next
+                    count -= 1
                 } else {
                     currentNode = currentNode?.next
                     beforeCurrent = beforeCurrent?.next

@@ -266,10 +266,6 @@ checkForStringShift(str1: "hello", str2: "lohel")
 /* */
 
 /* Карьера программиста 2.1 */
-var list = LinkedList<Int>()
-for i in 0...100 {
-    i % 2 == 0 ? list.append(i) : list.append(i - 1)
-}
 
 func removeDuplicates<T: Equatable>(in list: LinkedList<T>) -> LinkedList<T> {
     var temp = list
@@ -283,8 +279,33 @@ func removeDuplicates<T: Equatable>(in list: LinkedList<T>) -> LinkedList<T> {
     return readyList
 }
 
-var newList = removeDuplicates(in: list)
+/* */
 
-list.removeAllDuplicates()
+/* Карьера программиста 2.2 */
+
+func findLastIndex<T>(in list: LinkedList<T>, at index: Int) -> Node<T> {
+    let lastIndex = list.count - (index + 1)
+    if lastIndex >= 0 {
+        return list.node(at: lastIndex)!
+    }
+    return list.node(at: 0)!
+}
+
+/* */
+
+/* Карьера программиста 2.3 */
+
+func deleteMiddleNode<T>(in list: inout LinkedList<T>) {
+    var count = 0
+    var firstPtr = list.head
+    var secondPtr = firstPtr
+    while firstPtr?.next?.next != nil {
+        firstPtr = firstPtr?.next?.next
+        secondPtr = secondPtr?.next
+        count += 1
+    }
+    list.node(at: count - 1)?.next = secondPtr?.next
+    list.count -= 1
+}
 
 /* */
