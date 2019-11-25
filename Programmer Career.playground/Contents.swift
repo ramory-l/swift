@@ -265,14 +265,26 @@ checkForStringShift(str1: "hello", str2: "lohel")
 
 /* */
 
-var list1 = LinkedList<Int>()
-list1.append(1)
-list1.append(2)
-var list2 = list1
-print("List1: \(list1)")
-print("List2: \(list2)")
+/* Карьера программиста 2.1 */
+var list = LinkedList<Int>()
+for i in 0...100 {
+    i % 2 == 0 ? list.append(i) : list.append(i - 1)
+}
 
-print("After appending 3 to list2")
-list2.append(3)
-print("List1: \(list1)")
-print("List2: \(list2)")
+func removeDuplicates<T: Equatable>(in list: LinkedList<T>) -> LinkedList<T> {
+    var temp = list
+    var readyList = LinkedList<T>()
+    readyList.append(temp.head!.value)
+    temp.removeAll(temp.head!.value)
+    while temp.head != nil {
+        readyList.append(temp.head!.value)
+        temp.removeAll(temp.head!.value)
+    }
+    return readyList
+}
+
+var newList = removeDuplicates(in: list)
+
+list.removeAllDuplicates()
+
+/* */

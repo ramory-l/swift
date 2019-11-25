@@ -108,6 +108,24 @@ public struct LinkedList<Value> {
         }
         return node.next?.value
     }
+    @discardableResult
+    public mutating func remove(node: Node<Value>) -> Value? {
+        guard let node = copyNodes(returningCopyOf: node) else { return nil }
+        if node === tail {
+            return removeLast()
+        } else if node === head {
+            return pop()
+        }
+        var previous = head
+        while let current = previous?.next {
+            if current === node {
+                previous?.next = current.next
+                break
+            }
+            previous = previous?.next
+        }
+        return node.value
+    }
     private mutating func copyNodes() {
         guard !isKnownUniquelyReferenced(&head) else {
             return
@@ -202,5 +220,44 @@ extension LinkedList: Collection {
     // 4
     public subscript(position: Index) -> Value {
         position.node!.value
+    }
+}
+
+extension LinkedList where Value: Equatable {
+    
+    public mutating func removeAll(_ value: Value) {
+        while let head = self.head, head.value == value {
+            self.head = head.next
+        }
+        var prev = head
+        var current = head?.next
+        while let currentNode = current {
+            guard currentNode.value != value else {
+                prev?.next = currentNode.next
+                current = prev?.next
+                continue
+            }
+            prev = current
+            current = current?.next
+        }
+        tail = prev
+    }
+    public mutating func removeAllDuplicates() {
+        var previousNode = self.head
+        while previousNode != nil {
+            var beforeCurrent = previousNode
+            var currentNode = beforeCurrent?.next
+            let currentValue = previousNode?.value
+            while currentNode != nil {
+                if currentNode?.value == currentValue {
+                    beforeCurrent?.next = currentNode?.next
+                    currentNode = beforeCurrent?.next
+                } else {
+                    currentNode = currentNode?.next
+                    beforeCurrent = beforeCurrent?.next
+                }
+            }
+            previousNode = previousNode?.next
+        }
     }
 }
