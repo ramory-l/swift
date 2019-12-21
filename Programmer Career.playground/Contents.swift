@@ -193,7 +193,7 @@ func squeezeData(str: String) -> String {
     return string
 }
 
-squeezeData(str: "aa")
+squeezeData(str: "aaaaabbbbbtttttssss")
 
 /* */
 
@@ -309,3 +309,162 @@ func deleteMiddleNode<T>(in list: inout LinkedList<T>) {
 }
 
 /* */
+
+/* Карьера программиста 2.4 */
+
+func splitList<Value: Comparable>(with value: Value, in list: LinkedList<Value>) -> LinkedList<Value> {
+    var lowList = LinkedList<Value>()
+    var highList = LinkedList<Value>()
+    var current = list.head
+    while current != nil {
+        if current!.value < value {
+            lowList.append(current!.value)
+        } else {
+            highList.append(current!.value)
+        }
+        current = current?.next
+    }
+    lowList.tail?.next = highList.head
+    lowList.tail = highList.tail
+    return lowList
+}
+
+/* */
+
+/* Карьера программиста 2.5 */
+
+func sumLists(firstList: LinkedList<Int>, secondList: LinkedList<Int>) -> LinkedList<Int> {
+    var result = LinkedList<Int>()
+    var firstValue = ""
+    var secondValue = ""
+    var firstHead = firstList.head
+    var secondHead = secondList.head
+    while firstHead != nil && secondHead != nil {
+        firstValue = String(firstHead!.value) + firstValue
+        secondValue = String(secondHead!.value) + secondValue
+        if firstHead != nil {
+            firstHead = firstHead?.next
+        }
+        if secondHead != nil {
+            secondHead = secondHead?.next
+        }
+    }
+    let sum = String(Int(firstValue)! + Int(secondValue)!)
+    for char in sum {
+        result.append(Int(String(char))!)
+    }
+    return result
+}
+
+/* */
+
+/* Карьера программиста 2.6 */
+
+func isPolinList<Value: Comparable>(_ list: LinkedList<Value>) -> Bool {
+    var reversedList = LinkedList<Value>()
+    var current = list.head
+    while current != nil {
+        reversedList.push(current!.value)
+        current = current?.next
+    }
+    for (i, j) in zip(list, reversedList) {
+        if i != j {
+            return false
+        }
+    }
+    return true
+}
+
+/* */
+
+/* Карьера программиста 2.7 */
+
+//var list1 = LinkedList<Int>()
+//list1.append(1)
+//list1.append(2)
+//list1.append(3)
+//list1.append(4)
+//list1.append(5)
+//list1.count
+//
+//var list2 = LinkedList<Int>()
+//list2.append(3)
+//list2.append(8)
+//list2.append(4)
+//list2.append(10)
+//list2.count
+//
+//list1.node(at: 1)?.next = list2.node(at: 0)
+//
+//
+//print(list1)
+//print(list2)
+
+func findIntersect<Value>(in firstList: LinkedList<Value>, and secondList: LinkedList<Value>) -> Node<Value>? {
+    var countFirst = 0
+    var countSecond = 0
+    var currentFirst = firstList.head
+    var currentSecond = secondList.head
+    while currentFirst != nil || currentSecond != nil {
+        if currentFirst != nil {
+            countFirst += 1
+        }
+        if currentSecond != nil {
+            countSecond += 1
+        }
+        currentFirst = currentFirst?.next
+        currentSecond = currentSecond?.next
+    }
+    currentFirst = firstList.head
+    currentSecond = secondList.head
+    let diff = abs(countFirst - countSecond)
+    var i = 0
+    if countFirst > countSecond {
+        while i < diff {
+            currentFirst = currentFirst?.next
+            i += 1
+        }
+    } else {
+        while i < diff {
+            currentSecond = currentSecond?.next
+            i += 1
+        }
+    }
+    while currentFirst != nil && currentSecond != nil {
+        if currentFirst === currentSecond {
+            return currentFirst
+        }
+        currentFirst = currentFirst?.next
+        currentSecond = currentSecond?.next
+    }
+    return nil
+}
+
+/* */
+
+
+/* Карьера программиста 2.8 */
+
+var list = LinkedList<Int>()
+list.append(1)
+list.append(2)
+list.append(3)
+list.append(4)
+list.append(5)
+list.append(6)
+list.node(at: 5)?.next = list.node(at: 2)
+func findLoopElement<Value>(in list: LinkedList<Value>) -> Node<Value>? {
+    var fast = list.head
+    var slow = list.head
+    while fast != nil && fast?.next != nil {
+        slow = slow?.next
+        fast = fast?.next?.next
+        if slow === fast {
+            print("Hey")
+            break
+        }
+    }
+    return nil
+}
+
+findLoopElement(in: list)
